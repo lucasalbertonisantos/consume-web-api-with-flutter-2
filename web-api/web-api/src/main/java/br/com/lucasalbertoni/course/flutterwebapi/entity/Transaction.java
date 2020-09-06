@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Transaction {
 	
 	private String id;
-	private double value;
+	private Double value;
 	private Contact contact;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dateTime;
@@ -18,10 +18,10 @@ public class Transaction {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public double getValue() {
+	public Double getValue() {
 		return value;
 	}
-	public void setValue(double value) {
+	public void setValue(Double value) {
 		this.value = value;
 	}
 	public Contact getContact() {
