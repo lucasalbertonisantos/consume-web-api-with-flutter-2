@@ -1,11 +1,7 @@
 import 'package:bytebank/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
-import 'components/transaction_auth_dialog.dart';
-
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
@@ -19,7 +15,7 @@ class MyApp extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
       ),
-      home: TransactionAuthDialog(),
+      home: Dashboard(),
     );
   }
 }

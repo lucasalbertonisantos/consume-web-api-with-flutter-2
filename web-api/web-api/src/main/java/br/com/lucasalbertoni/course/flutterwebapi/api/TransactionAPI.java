@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,8 @@ import br.com.lucasalbertoni.course.flutterwebapi.entity.Transaction;
 @RequestMapping("/transactions")
 public class TransactionAPI {
 	
+	private static final String PASSWORD = "6661"; 
+	
 	private final Map<String, Transaction> transactions = new HashMap<>();
 	
 	@GetMapping
@@ -27,7 +30,10 @@ public class TransactionAPI {
 	}
 	
 	@PostMapping
-	public Transaction set(@RequestBody Transaction transaction) {
+	public Transaction set(@RequestHeader String password, @RequestBody Transaction transaction) {
+		if(!PASSWORD.equals(password)) {
+			throw new RuntimeException("Password incorreto!");
+		}
 		String id = UUID.randomUUID().toString();
 		transaction.setId(id);
 		transaction.setDateTime(LocalDateTime.now());
