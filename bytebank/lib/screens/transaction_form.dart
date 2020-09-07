@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/components/response_dialog.dart';
 import 'package:bytebank/components/transaction_auth_dialog.dart';
 import 'package:bytebank/http/webclients/transaction_web_client.dart';
@@ -24,7 +25,7 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    print('trasaction form id $transactionId');
+    print('transaction form id $transactionId');
     return Scaffold(
       appBar: AppBar(
         title: Text('New transaction'),
@@ -35,6 +36,15 @@ class _TransactionFormState extends State<TransactionForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Visibility(
+                visible: false,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Progress(
+                    message: 'Sending...',
+                  ),
+                ),
+              ),
               Text(
                 widget.contact.name,
                 style: TextStyle(
