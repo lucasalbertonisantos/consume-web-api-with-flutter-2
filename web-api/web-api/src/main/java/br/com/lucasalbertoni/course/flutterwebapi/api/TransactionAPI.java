@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpServerErrorException;
 
 import br.com.lucasalbertoni.course.flutterwebapi.entity.Transaction;
 
@@ -40,10 +39,14 @@ public class TransactionAPI {
 		if(!PASSWORD.equals(password)) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		String id = UUID.randomUUID().toString();
-		transaction.setId(id);
+		if(transactions.containsKey(transaction.getId())) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+		if(transaction.getId() == null || transaction.getId().isBlank()) {
+			transaction.setId(UUID.randomUUID().toString());
+		}
 		transaction.setDateTime(LocalDateTime.now());
-		transactions.put(id, transaction);
+		transactions.put(transaction.getId(), transaction);
 		return ResponseEntity.ok(transaction);
 	}
 	
