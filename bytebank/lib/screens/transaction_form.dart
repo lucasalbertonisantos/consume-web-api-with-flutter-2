@@ -23,6 +23,8 @@ class _TransactionFormState extends State<TransactionForm> {
   final TransactionWebClient _webClient = TransactionWebClient();
   final String transactionId = Uuid().v4();
 
+  bool _sending = false;
+
   @override
   Widget build(BuildContext context) {
     print('transaction form id $transactionId');
@@ -37,7 +39,7 @@ class _TransactionFormState extends State<TransactionForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Visibility(
-                visible: false,
+                visible: _sending,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Progress(
@@ -103,11 +105,17 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(Transaction transactionCreated, String password,
       BuildContext context) async {
+    setState(() {
+      _sending = true;
+    });
     Transaction transaction = await _send(
       transactionCreated,
       password,
       context,
     );
+    setState(() {
+      _sending = false;
+    });
     _showSuccessfulMessage(transaction, context);
   }
 
