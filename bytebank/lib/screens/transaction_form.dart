@@ -105,17 +105,11 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(Transaction transactionCreated, String password,
       BuildContext context) async {
-    setState(() {
-      _sending = true;
-    });
     Transaction transaction = await _send(
       transactionCreated,
       password,
       context,
     );
-    setState(() {
-      _sending = false;
-    });
     _showSuccessfulMessage(transaction, context);
   }
 
@@ -133,6 +127,9 @@ class _TransactionFormState extends State<TransactionForm> {
 
   Future<Transaction> _send(Transaction transactionCreated, String password,
       BuildContext context) async {
+    setState(() {
+      _sending = true;
+    });
     final Transaction transaction =
         await _webClient.save(transactionCreated, password).catchError((e) {
       _showFailureMessage(context,
@@ -141,6 +138,10 @@ class _TransactionFormState extends State<TransactionForm> {
       _showFailureMessage(context, message: e.message);
     }, test: (e) => e is HttpException).catchError((e) {
       _showFailureMessage(context);
+    }).whenComplete(() {
+      setState(() {
+        _sending = false;
+      });
     });
     return transaction;
   }
